@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-sm-9">
+        <div *ngIf='addButtonClicked'>
+            <h2>Add new Video</h2>
+            <form #formValue='ngForm' (ngSubmit)='onSubmitForm(videoModel)' novalidate>
+                <div class="form-group">
+                    <input  [class.is-invalid]='title.invalid && title.touched' 
+                            required #title='ngModel' name="title" type="text" 
+                            class="form-control" [(ngModel)]='videoModel.title'>
+                    <div *ngIf='title.invalid && title.touched' class="text-danger">
+                        title field is required
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input [class.is-invalid]='url.invalid && url.touched' 
+                           #url='ngModel' [(ngModel)]='videoModel.url' 
+                           type="url" class="form-control"  name='url' required>
+                    
+                    <div *ngIf='url.invalid && url.touched' class="text-danger">
+                        <div *ngIf='url.errors.required'>url is required</div>
+                        <div *ngIf='url.errors.url'>url is not valid</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <textarea #description='ngModel' [(ngModel)]='videoModel.description' class="form-control" rows="4" name='description'></textarea>
+                </div>
+                <button [disabled]='formValue.form.invalid' type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+        </div>
+        <video-details *ngIf='selectedVideo' (deleteVideoEvent)='deleteVideo($event)' [video]='selectedVideo'></video-details>
+    </div>
+    <div class="col-sm-3">
+        <button (click)='onClickOfAddVideo()' class="btn btn-primary">Add new video</button>
+        <video-list (SelectVideo)='onSelectVideo($event)' [videos]='videos'></video-list>
+    </div>
+</div>
